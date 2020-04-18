@@ -20,6 +20,8 @@ from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 from uuid import uuid4
 
+import requests
+from flask import Flask, jsonify, request
 
 class BlockChain:
     def __init__(self):
@@ -95,7 +97,28 @@ class BlockChain:
         print(guess_hash)
         return guess_hash[0:4] == "0000"
 
+ # 实例化节点
+app = Flask(__name__)
 
-#  创建一个实例
-testPow = BlockChain()
-testPow.proof_of_work(100)
+# 写一个路由
+@app.route('/index', methods = ['GET'])
+def index():
+    return "hello BlockChain"
+
+# 新交易的路由
+@app.route('/transaction/new', methods=['POST'])
+def new_transaction():
+    return "we will add a new transaction"
+
+# 挖矿的路由
+@app.route('/mine', methods=['GET'])
+def mine():
+    return " We will mine a new block"
+
+# 返回整个区块链的信息
+@app.route('/chain', methods=['GET'])
+def full_chain():
+    return "full chain"
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
